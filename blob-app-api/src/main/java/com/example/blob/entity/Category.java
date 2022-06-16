@@ -2,6 +2,7 @@ package com.example.blob.entity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -20,21 +21,17 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-public class User {
+public class Category {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer categoryId;
 	
+	private String categoryTitle;
 	
-	private String name;
+	@Column(name="description")
+	private String categoryDescription;
 	
-	private String email;
-	
-	private String password;
-	
-	private String about;
-	
-	@OneToMany(mappedBy="user", cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private List<Post> posts= new ArrayList<Post>();
+	@OneToMany(mappedBy="category", cascade=CascadeType.ALL,fetch=FetchType.LAZY)
+	private List<Post> posts= new ArrayList<Post>(); 
 }
