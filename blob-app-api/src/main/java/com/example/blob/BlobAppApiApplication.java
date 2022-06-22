@@ -1,5 +1,9 @@
 package com.example.blob;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.hibernate.dialect.SAPDBDialect;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -8,11 +12,18 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.example.blob.config.AppConstant;
+import com.example.blob.entity.Role;
+import com.example.blob.repositories.RoleRepo;
+
 @SpringBootApplication
 public class BlobAppApiApplication implements CommandLineRunner {
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private RoleRepo roleRepo;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(BlobAppApiApplication.class, args);
@@ -28,5 +39,28 @@ public class BlobAppApiApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		System.out.println(this.passwordEncoder.encode("1234"));
 		
+		try {
+			Role role=new Role();
+			role.setId(AppConstant.ADMIN_USER);
+			role.setName("ROLE_ADMIN");
+			
+			Role role1=new Role();
+			role1.setId(AppConstant.NORMAL_USER);
+			role1.setName("ROLE_NORMAL");
+			
+			List<Role> roles=new ArrayList<Role>();
+			
+			roles.add(role1);
+			roles.add(role);
+			
+			List<Role> saveAll = this.roleRepo.saveAll(roles);
+			
+			saveAll.forEach(r->{
+				System.out.println(r.getName());
+			});
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

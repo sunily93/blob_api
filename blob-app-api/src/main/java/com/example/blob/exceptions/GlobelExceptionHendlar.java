@@ -37,4 +37,13 @@ public class GlobelExceptionHendlar {
 		
 		return new ResponseEntity<Map<String,String>>(resp,HttpStatus.BAD_REQUEST);
 	}
+	
+	@ExceptionHandler(ApiException.class)
+	public ResponseEntity<ApiResponse> handleApiExcptionHandler(ApiException ex)
+	{
+		String message=ex.getMessage();
+		ApiResponse apiResponse = new ApiResponse(message,false);
+		System.out.println(apiResponse+"---------------------");
+		return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.BAD_REQUEST);
+	}
 }
